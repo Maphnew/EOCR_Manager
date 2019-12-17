@@ -10,44 +10,133 @@
 <body>
     <div class="main-content">
         {{>header}}
-        <table>
-            <thead>
-                <th>ID</th>
-                <th>MAC ID</th>
-                <th>NAME</th>
-                <th>HOST</th>
-                <th>PORT</th>
-                <th>UNIT ID</th>
-                <th>ENABLED</th>
-            </thead>
-            <tbody>
-                {{#eocrs}}
-                <tr>
-                    <td>
-                        <a href="/device?id=asd">{{ID}}</a>
-                    </td>
-                    <td>{{MAC_ID}}</td>
-                    <td>{{NAME}}</td>
-                    <td>{{HOST}}</td>
-                    <td>{{PORT}}</td>
-                    {{#if UNIT_ID}}
-                    <td>EOCR Device</td>
-                    {{else}}
-                    <td>EXPORT SERVER DATA</td>
-                    {{/if}}
-                    {{#if ENABLED}}
-                    <td>
-                        <img src="/img/icon-yes.svg" alt="True">
-                    </td>
-                    {{else}}
-                    <td>
-                        <img src="/img/icon-no.svg" alt="False">
-                    </td>
-                    {{/if}}
-                </tr>
-                {{/eocrs}}
-            </tbody>
-        </table>
+    <form action method="post" id="device_form" novalidate>
+        <div>
+            <fieldset class="module aligned">
+                {{#eocr}}
+                <div class="form-row field-mac_id">
+                    <div>
+                        <label class="required" for="id_mac_id">
+                            MAC ID:
+                        </label>
+                        <input type="text" id= "id_mac_id" name="mac_id" value={{MAC_ID}} class="vTextField" maxlength="15" required>
+                    </div>
+                </div>
+                <div class="form-row field-name">
+                    <div>
+                        <label class="required" for="id_name">
+                            Name:
+                        </label>
+                        <input type="text" id= "id_name" name="name" value={{NAME}} class="vTextField" maxlength="50" required>
+                    </div>
+                </div>
+                <div class="form-row field-host">
+                    <div>
+                        <label class="required" for"id_host">
+                            Host:
+                        </label>
+                        <input type="text" id="id_host" name="host" value={{HOST}} class="vTextField" maxlength="15" required >
+                    </div>
+                </div>
+                <div class="form-row field-port">
+                    <div>
+                        <label class="required" for"id_port">
+                            Port:
+                        </label>
+                        <input type="number" id="id_port" name="port" value={{PORT}} class="vTextIntegerField" required >
+                    </div>
+                </div>
+                <div class="form-row field-unit_id">
+                    <div>
+                        <label class="required" for"id_unit_id">
+                            Unit ID:
+                        </label>
+                        <select name="unit_id" id="id_unit_id">
+                            <option value="{{UNIT_ID}}" hidden="hidden" selected="selected">
+                                {{#if UNIT_ID}}
+                                    UYEG DEVICE
+                                {{else}}
+                                    EXPORT DEVICE
+                                {{/if}}
+                            </option>
+                            <option value="0">EXPORT DEVICE</option>
+                            <option value="1">UYEG DEVICE</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row field-remap_version">
+                                        <div>
+                        <label class="required" for"id_remap_version">
+                            Remap version:
+                        </label>
+                        <select name="remap_version" id="id_remap_version">
+                            <option value={{REMAP_VERSION}} hidden="hidden" selected="selected">
+                                <script>console.log({{REMAP_VERSION}})</script>
+                                {{#if REMAP_VERSION equals=1}}
+                                    REMAP v1
+                                {{else if REMAP_VERSION equals=2}}
+                                    REMAP v2
+                                {{/if}}
+                            </option>
+                            
+                            <option value="1">REMAP v1</option>
+                            <option value="2">REMAP v2</option>
+                           
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row field-process_interval">
+                    <div>
+                        <label class="required" for"id_process_interval">
+                            Process Interval:
+                        </label>
+                        <input type="number" id="id_process_interval" name="process_interval" value={{PROCESS_INTERVAL}} class="vTextIntegerField" required >
+                    </div>
+                </div>
+                <div class="form-row field-retry_cycle">
+                    <div>
+                        <label class="required" for"id_retry_cycle">
+                            Retry cycle:
+                        </label>
+                        <input type="number" id="id_retry_cycle" name="retry_cycle" value={{RETRY_CYCLE}} class="vTextIntegerField" required >
+                    </div>
+                </div>
+                <div class="form-row field-retry_count">
+                    <div>
+                        <label class="required" for"id_retry_count">
+                            Retry count:
+                        </label>
+                        <input type="number" id="id_retry_count" name="retry_count" value={{RETRY_COUNT}} class="vTextIntegerField" required >
+                    </div>
+                </div>
+                <div class="form-row field-retry_conn_failed_count">
+                    <div>
+                        <label class="required" for"id_retry_conn_failed_count">
+                            Retry conn failed count:
+                        </label>
+                        <input type="number" id="id_retry_conn_failed_count" name="retry_conn_failed_count" value={{RETRY_CONN_FAILED_COUNT}} class="vTextIntegerField" required >
+                    </div>
+                </div>
+                <div class="form-row field-enabled">
+                    <div class="checkbox-row">
+                        <input type="checkbox" name="enabled" id="id_enabled" {{#if ENABLED}}checked{{/if}}>
+                        <label class="vCheckboxLabel" for="id_enabled">Enabled</label>
+                    </div>
+                </div>
+                {{/eocr}}
+            </fieldset>
+            <div class="submit-row">
+                <input type="submit" value="저장" class="default" name="_save">
+                <p class="deletelink-box">
+                    <a href="" class="deletelink">삭제</a>
+                </p>
+                <input type="submit" value="저장 및 다른 이름으로 추가" name="_addanother">
+                <input type="submit" value="저장 및 편집 계속" name="_continue">
+            </div>
+
+        </div>
+    </form>
         
     </div>
     {{>footer}}

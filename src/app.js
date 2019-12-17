@@ -16,6 +16,10 @@ app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 
+hbs.registerHelper('isEqual', (v1, v2) => {
+
+})
+
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath))
 
@@ -58,7 +62,7 @@ app.get('/device', (req,res) => {
         const query = connection.query("SELECT `ID`, `GATEWAY_ID`, `MAC_ID`, `NAME`, `HOST`, `PORT`, `UNIT_ID`, `REMAP_VERSION`, `PROCESS_INTERVAL`, `RETRY_CYCLE`, `RETRY_COUNT`, `RETRY_CONN_FAILED_COUNT`, `ENABLED` FROM DEVICE WHERE ID ="+id, (error, rows) =>{
             if(error) throw error
             if(rows) {
-                console.log(rows)
+                // console.log(rows)
                 res.render(
                     'updateDevice', {
                         title: 'Smart-EOCR MANAGER',
@@ -97,6 +101,7 @@ app.get('*', (req, res) => {
         errorMessage: 'Page not found.'
     })
 })
+
 
 app.listen(port, () => {
     console.log('Server is up on port ' + port + '. http://localhost:' + port) 
