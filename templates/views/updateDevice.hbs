@@ -72,17 +72,11 @@
                         </label>
                         <select name="remap_version" id="id_remap_version">
                             <option value={{REMAP_VERSION}} hidden="hidden" selected="selected">
-                                <script>console.log({{REMAP_VERSION}})</script>
-                                {{#if REMAP_VERSION equals=1}}
-                                    REMAP v1
-                                {{else if REMAP_VERSION equals=2}}
-                                    REMAP v2
-                                {{/if}}
+                                REMAP v{{REMAP_VERSION}}
                             </option>
-                            
                             <option value="1">REMAP v1</option>
                             <option value="2">REMAP v2</option>
-                           
+
                         </select>
                     </div>
                 </div>

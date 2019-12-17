@@ -16,10 +16,6 @@ app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 
-hbs.registerHelper('isEqual', (v1, v2) => {
-
-})
-
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath))
 
