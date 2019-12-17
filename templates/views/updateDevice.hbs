@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="main-content">
+        {{>header}}
+        <table>
+            <thead>
+                <th>ID</th>
+                <th>MAC ID</th>
+                <th>NAME</th>
+                <th>HOST</th>
+                <th>PORT</th>
+                <th>UNIT ID</th>
+                <th>ENABLED</th>
+            </thead>
+            <tbody>
+                {{#eocrs}}
+                <tr>
+                    <td>
+                        <a href="/device?id=asd">{{ID}}</a>
+                    </td>
+                    <td>{{MAC_ID}}</td>
+                    <td>{{NAME}}</td>
+                    <td>{{HOST}}</td>
+                    <td>{{PORT}}</td>
+                    {{#if UNIT_ID}}
+                    <td>EOCR Device</td>
+                    {{else}}
+                    <td>EXPORT SERVER DATA</td>
+                    {{/if}}
+                    {{#if ENABLED}}
+                    <td>
+                        <img src="/img/icon-yes.svg" alt="True">
+                    </td>
+                    {{else}}
+                    <td>
+                        <img src="/img/icon-no.svg" alt="False">
+                    </td>
+                    {{/if}}
+                </tr>
+                {{/eocrs}}
+            </tbody>
+        </table>
+        
+    </div>
+    {{>footer}}
+    
+</body>
+</html>
