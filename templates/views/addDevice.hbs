@@ -11,18 +11,20 @@
     <div class="main-content">
         {{>header}}
         <div>
-            <h3>Device 변경</h3>
+            <h3>Add Device</h3>
         </div>
-        <form action method="post" id="device_form" novalidate>
+        <div>
+            <p class="errornote">{{errorMessage}}</p>
+        </div>
+        <form action="/addDevice" method="POST" id="add_device_form" novalidate>
             <div>
                 <fieldset class="module aligned">
-                    {{#eocr}}
                     <div class="form-row field-mac_id">
                         <div>
                             <label class="required" for="id_mac_id">
                                 MAC ID:
                             </label>
-                            <input type="text" id= "id_mac_id" name="mac_id" value={{MAC_ID}} class="vTextField" maxlength="15" required>
+                            <input type="text" id= "id_mac_id" name="mac_id" value="" class="vTextField" maxlength="15" placeholder="123456789ABC" required>
                         </div>
                     </div>
                     <div class="form-row field-name">
@@ -30,7 +32,7 @@
                             <label class="required" for="id_name">
                                 Name:
                             </label>
-                            <input type="text" id= "id_name" name="name" value={{NAME}} class="vTextField" maxlength="50" required>
+                            <input type="text" id= "id_name" name="name" value="" class="vTextField" maxlength="50" placeholder="MOTOR #1" required>
                         </div>
                     </div>
                     <div class="form-row field-host">
@@ -38,7 +40,7 @@
                             <label class="required" for"id_host">
                                 Host:
                             </label>
-                            <input type="text" id="id_host" name="host" value={{HOST}} class="vTextField" maxlength="15" required >
+                            <input type="text" id="id_host" name="host" value="" class="vTextField" maxlength="15" placeholder="192.168.100.100" required >
                         </div>
                     </div>
                     <div class="form-row field-port">
@@ -46,7 +48,7 @@
                             <label class="required" for"id_port">
                                 Port:
                             </label>
-                            <input type="number" id="id_port" name="port" value={{PORT}} class="vTextIntegerField" required >
+                            <input type="number" id="id_port" name="port" value="502" class="vTextIntegerField" placeholder=502 required >
                         </div>
                     </div>
                     <div class="form-row field-unit_id">
@@ -55,16 +57,8 @@
                                 Unit ID:
                             </label>
                             <select name="unit_id" id="id_unit_id">
-                                <option value="{{UNIT_ID}}" hidden="hidden" selected="selected">
-                                    {{#if UNIT_ID}}
-                                        UYEG DEVICE
-                                    {{else}}
-                                        EXPORT DEVICE
-                                    {{/if}}
-                                </option>
-                                <option value="0">EXPORT DEVICE</option>
-                                <option value="1">UYEG DEVICE</option>
-                                
+                                <option value="0" >EXPORT DEVICE</option>
+                                <option value="1" selected="selected">UYEG DEVICE</option>
                             </select>
                         </div>
                     </div>
@@ -74,12 +68,8 @@
                                 Remap version:
                             </label>
                             <select name="remap_version" id="id_remap_version">
-                                <option value={{REMAP_VERSION}} hidden="hidden" selected="selected">
-                                    REMAP v{{REMAP_VERSION}}
-                                </option>
                                 <option value="1">REMAP v1</option>
-                                <option value="2">REMAP v2</option>
-
+                                <option value="2" selected="selected">REMAP v2</option>
                             </select>
                         </div>
                     </div>
@@ -88,7 +78,7 @@
                             <label class="required" for"id_process_interval">
                                 Process Interval:
                             </label>
-                            <input type="number" id="id_process_interval" name="process_interval" value={{PROCESS_INTERVAL}} class="vTextIntegerField" required >
+                            <input type="number" id="id_process_interval" name="process_interval" value="100" class="vTextIntegerField" placeholder=100 required >
                         </div>
                     </div>
                     <div class="form-row field-retry_cycle">
@@ -96,7 +86,7 @@
                             <label class="required" for"id_retry_cycle">
                                 Retry cycle:
                             </label>
-                            <input type="number" id="id_retry_cycle" name="retry_cycle" value={{RETRY_CYCLE}} class="vTextIntegerField" required >
+                            <input type="number" id="id_retry_cycle" name="retry_cycle" value="100" class="vTextIntegerField" placeholder=100 required >
                         </div>
                     </div>
                     <div class="form-row field-retry_count">
@@ -104,7 +94,7 @@
                             <label class="required" for"id_retry_count">
                                 Retry count:
                             </label>
-                            <input type="number" id="id_retry_count" name="retry_count" value={{RETRY_COUNT}} class="vTextIntegerField" required >
+                            <input type="number" id="id_retry_count" name="retry_count" value="3000" class="vTextIntegerField" placeholder=3000 required >
                         </div>
                     </div>
                     <div class="form-row field-retry_conn_failed_count">
@@ -112,24 +102,25 @@
                             <label class="required" for"id_retry_conn_failed_count">
                                 Retry conn failed count:
                             </label>
-                            <input type="number" id="id_retry_conn_failed_count" name="retry_conn_failed_count" value={{RETRY_CONN_FAILED_COUNT}} class="vTextIntegerField" required >
+                            <input type="number" id="id_retry_conn_failed_count" name="retry_conn_failed_count" value="100" class="vTextIntegerField" placeholder=100 required >
                         </div>
                     </div>
                     <div class="form-row field-enabled">
                         <div class="checkbox-row">
-                            <input type="checkbox" name="enabled" id="id_enabled" {{#if ENABLED}}checked{{/if}}>
+                            <input type="checkbox" name="enabled" id="id_enabled" checked>
                             <label class="vCheckboxLabel" for="id_enabled">Enabled</label>
                         </div>
                     </div>
-                    {{/eocr}}
                 </fieldset>
+               
                 <div class="submit-row">
                     <input type="submit" value="저장" class="default" name="_save">
+
                     <p class="deletelink-box">
                         <a href="" class="deletelink">삭제</a>
                     </p>
                     <input type="submit" value="저장 및 다른 이름으로 추가" name="_addanother">
-                    <input type="submit" value="저장 및 편집 계속" name="_continue">
+                    {{!-- <input type="submit" value="저장 및 편집 계속" name="_continue"> --}}
                 </div>
 
             </div>
@@ -138,5 +129,6 @@
     </div>
     {{>footer}}
     
+    <script src="/js/addDevice.js"></script>
 </body>
 </html>
