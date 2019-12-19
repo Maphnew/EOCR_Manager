@@ -4,6 +4,7 @@ const hbs = require('hbs')
 const mysql = require('mysql')
 const bodyParser = require('body-parser')
 const session = require('express-session')
+const cookieParser = require('cookie-parser')
 
 const app = express()
 const port = process.env.PORT || 8000
@@ -22,12 +23,13 @@ hbs.registerPartials(partialsPath)
 app.use(express.static(publicDirectoryPath))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
+app.use(cookieParser())
 
 const connection = mysql.createConnection({
-    host: '192.168.100.22',
+    host: 'localhost',
     port: '3306',
     user: 'root',
-    password: 'its@1234',
+    password: '1234',
     database: 'uyeg'
 })
 
@@ -63,6 +65,7 @@ app.get('/device', (req,res) => {
             if(error) throw error
             if(rows) {
                 // console.log(rows)
+                res.cookie('id', req.query.id)
                 res.render(
                     'updateDevice', {
                         title: 'Smart-EOCR MANAGER',
@@ -150,15 +153,23 @@ app.post('/device', (req,res) => {
             console.log("update")
             session.message = 'Device ID "'+req.query.id+'"가 성공적으로 수정 되었습니다.'
             console.log("session.message: ", session.message)
-            res.redirect('device')
+            res.redirect('/device')
         }
         
     })
 
 })
 
-app.post('/device/delete', (req, res) => {
-    console.log('req.query.id', req)
+app.get('/device/delete', (req, res) => {
+    const id = req.cookies.id
+    const query = "DELETE FROM Device WHERE id="+id
+    connection.query(query, (error, result) => {
+        if(error) throw error
+        if(result) {
+            console.log(result)
+            res.redirect('/device')
+        }
+    })
 })
 
 app.get('/help', (req, res) => {
