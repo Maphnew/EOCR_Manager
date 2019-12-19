@@ -28,7 +28,13 @@ saveSubmit.addEventListener('click', (e) => {
     console.log(AddDeviceForm)
     e.preventDefault()
     if (macid.value == "" | name.value == "" | host.value == "" | port.value == "" | processInterval.value == "" | retryCycle.value == "" | retryCount.value == "" | retryFailedCount.value == "") {
+        let errornote = document.getElementsByClassName('errornote')
+        if (errornote.length > 0) {
+            AddDeviceForm.firstChild.remove()
+        }
         AddDeviceForm.insertAdjacentHTML('afterbegin', '<p class="errornote">아래의 정보들을 수정하십시오.</p>')
+
+        let errorlist = document.getElementsByClassName('errorlist')
         if (macid.value == "") {
             fieldMacid.insertAdjacentHTML('afterbegin', '<ul class="errorlist"><li>필수 항목입니다.</li></ul>')
         }
