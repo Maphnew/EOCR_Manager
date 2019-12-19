@@ -1,5 +1,8 @@
 # EOCR_Manager
 
+## Install nodejs & npm
+- Search "install nodejs"
+- Search "install npm"
 
 ### Download 
 
