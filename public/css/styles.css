@@ -322,7 +322,7 @@ ul {
 }
 
 ul li {
-    list-style-type: square;
+    list-style-type: none;
     padding: 1px 0;
     margin-right: 50px;
 }
@@ -360,6 +360,8 @@ li {
     padding: 10px 12px;
     margin: 0 0 10px 0;
     color: #ba2121;
+    border: 1px solid #ba2121;
+    border-radius: 4px;
     background-color: #fff;
     background-position: 5px 12px;
 }
@@ -389,4 +391,17 @@ ul {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     padding-inline-start: 40px;
+}
+
+ul.errorlist {
+    color: #ba2121;
+    list-style: none;
+}
+form .aligned ul {
+    margin-left: 160px;
+    padding-left: 10px;
+}
+
+.saveMessage {
+    float: none;
 }

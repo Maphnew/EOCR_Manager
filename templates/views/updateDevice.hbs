@@ -11,7 +11,7 @@
     <div class="main-content">
         {{>header}}
         <div>
-            <h3>Device 변경</h3>
+            <h3>Device 정보 수정</h3>
         </div>
         <form action method="post" id="device_form" novalidate>
             <div>
@@ -126,10 +126,10 @@
                 <div class="submit-row">
                     <input type="submit" value="저장" class="default" name="_save">
                     <p class="deletelink-box">
-                        <a href="" class="deletelink">삭제</a>
+                        <a href="/device/delete" class="deletelink">삭제</a>
                     </p>
-                    <input type="submit" value="저장 및 다른 이름으로 추가" name="_addanother">
-                    <input type="submit" value="저장 및 편집 계속" name="_continue">
+                    {{!-- <input type="submit" value="저장 및 다른 이름으로 추가" name="_addanother"> --}}
+                    {{!-- <input type="submit" value="저장 및 편집 계속" name="_continue"> --}}
                 </div>
 
             </div>
@@ -137,6 +137,6 @@
         
     </div>
     {{>footer}}
-    
+    <script src="/js/updateDevice.js"></script>
 </body>
 </html>

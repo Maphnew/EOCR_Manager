@@ -11,10 +11,7 @@
     <div class="main-content">
         {{>header}}
         <div>
-            <h3>Add Device</h3>
-        </div>
-        <div>
-            <p class="errornote">{{errorMessage}}</p>
+            <h3>Device 추가</h3>
         </div>
         <form action="/addDevice" method="POST" id="add_device_form" novalidate>
             <div>
@@ -112,15 +109,14 @@
                         </div>
                     </div>
                 </fieldset>
-               
                 <div class="submit-row">
                     <input type="submit" value="저장" class="default" name="_save">
 
-                    <p class="deletelink-box">
-                        <a href="" class="deletelink">삭제</a>
-                    </p>
-                    <input type="submit" value="저장 및 다른 이름으로 추가" name="_addanother">
-                    {{!-- <input type="submit" value="저장 및 편집 계속" name="_continue"> --}}
+                    {{!-- <p class="deletelink-box">
+                        <a href="/" class="deletelink">삭제</a>
+                    </p> --}}
+                    {{!-- <input type="submit" value="저장 및 다른 이름으로 추가" name="_addanother">
+                    <input type="submit" value="저장 및 편집 계속" name="_continue"> --}}
                 </div>
 
             </div>
