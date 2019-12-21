@@ -35,6 +35,7 @@ saveSubmit.addEventListener('click', (e) => {
         AddDeviceForm.insertAdjacentHTML('afterbegin', '<p class="errornote">아래의 정보들을 수정하십시오.</p>')
 
         let errorlist = document.getElementsByClassName('errorlist')
+        console.log(errorlist[0])
         if (macid.value == "") {
             fieldMacid.insertAdjacentHTML('afterbegin', '<ul class="errorlist"><li>필수 항목입니다.</li></ul>')
         }

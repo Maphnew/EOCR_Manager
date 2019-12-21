@@ -7,7 +7,7 @@ const session = require('express-session')
 const cookieParser = require('cookie-parser')
 
 const app = express()
-const port = process.env.PORT || 8000
+const port = 8000
 
 // Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, '../public')
@@ -169,6 +169,21 @@ app.get('/device/delete', (req, res) => {
             console.log(result)
             res.redirect('/device')
         }
+    })
+})
+
+app.post('/ajax_change_enablement', (req,res) => {
+    const responseData = {'result':'ok', 'eocrid': req.body.eocrid, 'isChecked': req.body.isChecked}
+    const query = "UPDATE `DEVICE` SET `ENABLED`="+req.body.isChecked+" WHERE MAC_ID='"+req.body.eocrid+"'"
+    console.log(query)
+    connection.query(query, (error, result) => {
+        if(error) throw error
+        if(result){
+            console.log(result)
+            res.json(responseData)
+            
+        }
+        
     })
 })
 
