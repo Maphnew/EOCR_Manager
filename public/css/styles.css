@@ -340,10 +340,10 @@ li {
 .object-tools a:link, .object-tools a:visited {
     display: block;
     float: left;
-    padding: 3px 12px;
-    background: #999;
-    font-weight: 400;
-    font-size: 11px;
+    padding: 5px 15px;
+    background: #2eb82e;
+    font-weight: bold;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: #fff;
@@ -404,4 +404,8 @@ form .aligned ul {
 
 .saveMessage {
     float: none;
+}
+
+th.th {
+    text-align: center;
 }

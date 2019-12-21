@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/checkbox.css">
     <link href="/css/component-custom-switch.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="main-content">
@@ -24,15 +27,15 @@
                 </a>
             </li>
         </ul>
-        <table>
+        <table class="table table-dark">
             <thead>
-                <th>ID</th>
-                <th>MAC ID</th>
-                <th>NAME</th>
-                <th>HOST</th>
-                <th>PORT</th>
-                <th>UNIT ID</th>
-                <th>ENABLED</th>
+                <th class="th">ID</th>
+                <th class="th">MAC ID</th>
+                <th class="th">NAME</th>
+                <th class="th">HOST</th>
+                <th class="th">PORT</th>
+                <th class="th">UNIT ID</th>
+                <th class="th">ENABLED</th>
             </thead>
             <tbody>
                 {{#eocrs}}
