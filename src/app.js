@@ -151,8 +151,9 @@ app.post('/device', (req,res) => {
         if(error) throw error
         if(result){
             console.log("update")
-            session.message = 'Device ID "'+req.query.id+'"가 성공적으로 수정 되었습니다.'
-            console.log("session.message: ", session.message)
+            res.cookie('id', req.query.id)
+            // session.message = 'Device ID "'+req.query.id+'"가 성공적으로 수정 되었습니다.'
+            // console.log("session.message: ", session.message)
             res.redirect('/device')
         }
         
