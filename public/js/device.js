@@ -7,10 +7,10 @@ const sendAjax = (url, eocrID, isChecked) => {
     xhr.open('POST', url)
     xhr.setRequestHeader('Content-Type', "application/json")
     xhr.send(data)
-    console.log("send", data)
+    // console.log("send", data)
     xhr.addEventListener('load', () => {
         const result = JSON.parse(xhr.responseText)
-        console.log(result)
+        // console.log(result)
         setTimeout(() => {
             window.location = "http://localhost:8000/device"
         }, 100)

@@ -175,11 +175,11 @@ app.get('/device/delete', (req, res) => {
 app.post('/ajax_change_enablement', (req,res) => {
     const responseData = {'result':'ok', 'eocrid': req.body.eocrid, 'isChecked': req.body.isChecked}
     const query = "UPDATE `DEVICE` SET `ENABLED`="+req.body.isChecked+" WHERE MAC_ID='"+req.body.eocrid+"'"
-    console.log(query)
+    // console.log(query)
     connection.query(query, (error, result) => {
         if(error) throw error
         if(result){
-            console.log(result)
+            // console.log(result)
             res.json(responseData)
             
         }
