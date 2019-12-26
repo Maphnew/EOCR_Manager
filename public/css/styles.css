@@ -28,7 +28,7 @@ header {
 }
 
 h1 {
-    font-size: 48px;
+    font-size: 36px;
     margin-bottom: 36px;
 }
 
@@ -175,7 +175,7 @@ div {
     display: block;
     padding: 4px 10px 0 0;
     float: left;
-    width: 160px;
+    width: 200px;
     word-wrap: break-word;
     line-height: 1;
 }
@@ -201,7 +201,7 @@ div {
     font-size: 14px;
 }
 .vTextField {
-    width: 20em;
+    width: 15em;
 }
 
 input {

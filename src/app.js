@@ -3,7 +3,7 @@ const express = require('express')
 const hbs = require('hbs')
 const mysql = require('mysql')
 const bodyParser = require('body-parser')
-const session = require('express-session')
+// const session = require('express-session')
 const cookieParser = require('cookie-parser')
 
 const app = express()
@@ -29,17 +29,42 @@ const connection = mysql.createConnection({
     host: 'localhost',
     port: '3306',
     user: 'root',
-    password: '1234',
-    database: 'uyeg'
+    password: 'its@1234',
+    database: 'uyeg',
+    multipleStatements: true
 })
 
 connection.connect()
-
 app.get('', (req,res) => {
-    res.render('index', {
-        title: 'Smart-EOCR MANAGER',
-        name: 'ITS'
+    const queryGataway = "SELECT DISTINCT GATEWAY_ID FROM DEVICE LIMIT 1; "
+    const countEnablement = "SELECT COUNT(*) AS ENABLED FROM DEVICE WHERE ENABLED = 1; "
+    const countAll = "SELECT COUNT(*) AS TOTAL FROM DEVICE; "
+    connection.query(queryGataway+countEnablement+countAll,(error, results, fields) => {
+        if(error) throw error;
+        if(results) {
+            
+            res.render('index', {
+                title: 'Smart-EOCR MANAGER',
+                name: 'ITS',
+                gatewayid:  results[0][0].GATEWAY_ID,
+                enabled: results[1][0].ENABLED,
+                total: results[2][0].TOTAL
+            })
+        }
+    })
+})
 
+app.post('', (req,res) => {
+    
+    const updateGatewayID = "UPDATE DEVICE SET `GATEWAY_ID` = '"+ req.body.gatewayid +"'"
+    
+    connection.query(updateGatewayID, (error, rows) =>{
+        if(error) throw error;
+        if(rows) {
+            res.redirect('/')
+        } else {
+            res.send('Unable to get data.')
+        }
     })
 })
 
@@ -64,7 +89,7 @@ app.get('/device', (req,res) => {
         const query = connection.query("SELECT `ID`, `GATEWAY_ID`, `MAC_ID`, `NAME`, `HOST`, `PORT`, `UNIT_ID`, `REMAP_VERSION`, `PROCESS_INTERVAL`, `RETRY_CYCLE`, `RETRY_COUNT`, `RETRY_CONN_FAILED_COUNT`, `ENABLED` FROM DEVICE WHERE ID ="+id, (error, rows) =>{
             if(error) throw error
             if(rows) {
-                // console.log(rows)
+
                 res.cookie('id', req.query.id)
                 res.render(
                     'updateDevice', {
@@ -83,7 +108,6 @@ app.get('/device', (req,res) => {
 })
 
 app.post('/addDevice', (req,res) => {
-    // console.log(req.body)
     const MAC_ID = req.body.mac_id
     const NAME = req.body.name
     const HOST = req.body.host
@@ -103,11 +127,10 @@ app.post('/addDevice', (req,res) => {
 
     const query = "INSERT INTO `DEVICE` (`MAC_ID`, `NAME`, `HOST`, `PORT`, `UNIT_ID`, `REMAP_VERSION`, `PROCESS_INTERVAL`, `RETRY_CYCLE`, `RETRY_COUNT`, `RETRY_CONN_FAILED_COUNT`, `ENABLED`) VALUES ('"+MAC_ID+"', '"+NAME+"', '"+HOST+"', "+PORT+", "+UNIT_ID+", "+REMAP_VERSION+", "+PROCESS_INTERVAL+", "+RETRY_CYCLE+", "+RETRY_COUNT+", "+RETRY_CONN_FAILED_COUNT+", "+ENABLED+")"
 
-    // console.log(query)
     connection.query(query, (error, result) => {
         if(error) throw error
         if(result){
-            console.log("save")
+
             res.redirect('addDevice')
         }
         
@@ -117,7 +140,7 @@ app.post('/addDevice', (req,res) => {
 })
 
 app.get('/addDevice', (req,res) => {
-    console.log("get")
+
     res.render('addDevice', {
         title: 'Smart-EOCR MANAGER',
         name: 'ITS'
@@ -145,15 +168,13 @@ app.post('/device', (req,res) => {
     
 
     const query = "UPDATE `DEVICE` SET `MAC_ID`='"+MAC_ID+"', `NAME`='"+NAME+"', `HOST`='"+HOST+"', `PORT`="+PORT+", `UNIT_ID`="+UNIT_ID+", `REMAP_VERSION`="+REMAP_VERSION+", `PROCESS_INTERVAL`="+PROCESS_INTERVAL+", `RETRY_CYCLE`="+RETRY_CYCLE+", `RETRY_COUNT`="+RETRY_COUNT+", `RETRY_CONN_FAILED_COUNT`="+RETRY_CONN_FAILED_COUNT+", `ENABLED`="+ENABLED+" WHERE ID="+req.query.id+""
-    console.log(query)
+
 
     connection.query(query, (error, result) => {
         if(error) throw error
         if(result){
-            console.log("update")
+
             res.cookie('id', req.query.id)
-            // session.message = 'Device ID "'+req.query.id+'"가 성공적으로 수정 되었습니다.'
-            // console.log("session.message: ", session.message)
             res.redirect('/device')
         }
         
@@ -163,11 +184,10 @@ app.post('/device', (req,res) => {
 
 app.get('/device/delete', (req, res) => {
     const id = req.cookies.id
-    const query = "DELETE FROM Device WHERE id="+id
+    const query = "DELETE FROM DEVICE WHERE id="+id
     connection.query(query, (error, result) => {
         if(error) throw error
         if(result) {
-            console.log(result)
             res.redirect('/device')
         }
     })
@@ -176,11 +196,11 @@ app.get('/device/delete', (req, res) => {
 app.post('/ajax_change_enablement', (req,res) => {
     const responseData = {'result':'ok', 'eocrid': req.body.eocrid, 'isChecked': req.body.isChecked}
     const query = "UPDATE `DEVICE` SET `ENABLED`="+req.body.isChecked+" WHERE MAC_ID='"+req.body.eocrid+"'"
-    // console.log(query)
+
     connection.query(query, (error, result) => {
         if(error) throw error
         if(result){
-            // console.log(result)
+
             res.json(responseData)
             
         }
@@ -188,12 +208,6 @@ app.post('/ajax_change_enablement', (req,res) => {
     })
 })
 
-app.get('/help', (req, res) => {
-    res.render('index', {
-        title: 'Smart-EOCR MANAGER',
-        name: 'ITS'
-    })
-})
 
 app.get('/device*', (req, res) => {
     res.render('404', {

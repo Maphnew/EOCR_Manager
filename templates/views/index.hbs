@@ -10,8 +10,26 @@
 <body>
     <div class="main-content">
         {{>header}}
-
-        
+        <div>
+            <h3>Gateway Information</h3>
+        </div>
+        <form action method="post" id="" novalidate>
+            <div class="form-row aligned">
+                <div class="form-row">
+                    <label class="required" for="id_gatewayid">
+                        GATEWAY ID: 
+                    </label>
+                    <input type="text" id="id_gatewayid" name="gatewayid" value={{gatewayid}} class="vTextField" maxlength="15" required>
+                    <input type="submit" value="변경" class="" name="_update">
+                </div>
+                <div class="form-row">
+                    <label class="required" for="id_enablement">
+                        ENABLEMENT(Enabled / Total): 
+                    </label>
+                    <label class="required">{{enabled}} / {{total}}</label>
+                </div>
+            </div>
+        </form>
     </div>
     {{>footer}}
     
