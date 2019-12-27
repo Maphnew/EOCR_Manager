@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(cookieParser())
 
 const connection = mysql.createConnection({
-    host: 'localhost',
+    host: '192.168.100.240',
     port: '3306',
     user: 'root',
     password: 'its@1234',
@@ -44,7 +44,7 @@ app.get('', (req,res) => {
         if(results) {
             
             res.render('index', {
-                title: 'Smart-EOCR MANAGER',
+                title: 'UYeG Device MANAGER',
                 name: 'ITS',
                 gatewayid:  results[0][0].GATEWAY_ID,
                 enabled: results[1][0].ENABLED,
@@ -74,7 +74,7 @@ app.get('/device', (req,res) => {
             if(error) throw error;
             if(rows) {
                 res.render('device', {
-                    title: 'Smart-EOCR MANAGER',
+                    title: 'UYeG Device MANAGER',
                     name: 'ITS',
                     eocrs: rows
                 })
@@ -93,7 +93,7 @@ app.get('/device', (req,res) => {
                 res.cookie('id', req.query.id)
                 res.render(
                     'updateDevice', {
-                        title: 'Smart-EOCR MANAGER',
+                        title: 'UYeG Device MANAGER',
                         name: 'ITS',
                         eocr: rows
                     }
@@ -142,7 +142,7 @@ app.post('/addDevice', (req,res) => {
 app.get('/addDevice', (req,res) => {
 
     res.render('addDevice', {
-        title: 'Smart-EOCR MANAGER',
+        title: 'UYeG Device MANAGER',
         name: 'ITS'
     })
 })
