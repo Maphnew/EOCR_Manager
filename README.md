@@ -65,7 +65,7 @@ $ node src/app.js
 
 
 
-# ROCK PI 4 부팅 시 EOCR Manager / SCADA 프로그램(golang) 자동 실행 설정 방법
+# ROCK PI 4 부팅 시 EOCR Manager 자동 실행 설정 방법
 
 ### 1. 셸 스크립트 작성
 - sh 파일 작성
