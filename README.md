@@ -54,6 +54,8 @@ $ git --version
 $ git clone https://github.com/Maphnew/EOCR_Manager.git
 $ cd EOCR_Manager
 $ npm i
+# To keep applications alive forever
+$ npm i pm2 -g
 ```
 - Test webpage
 ```bash
@@ -82,7 +84,8 @@ $ sudo vim eocr_manager.sh
 #!/bin/bash
 echo EOCR manager start
 
-node /home/rock/EOCR_Manager/src/app.js
+#node /home/rock/EOCR_Manager/src/app.js
+pm2 start /home/rock/EOCR_Manager/src/app.js
 
 exit 0
 ```
