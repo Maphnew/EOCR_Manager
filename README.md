@@ -168,7 +168,7 @@ if [ -f /etc/FIRST_BOOT ]; then
 fi
 
 # sh 파일 실행 구문 추가
-sh /home/rock/eocr_manager.sh &
+nohup sh /home/rock/eocr_manager.sh &
 
 # 마지막에 exit 0
 exit 0
