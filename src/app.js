@@ -27,6 +27,7 @@ app.use(cookieParser())
 
 const connection = mysql.createConnection({
     host: 'localhost',
+    // host: '192.168.100.22',
     port: '3306',
     user: 'root',
     password: 'its@1234',
@@ -39,6 +40,7 @@ app.get('', (req,res) => {
     const queryGataway = "SELECT DISTINCT GATEWAY_ID FROM DEVICE LIMIT 1; "
     const countEnablement = "SELECT COUNT(*) AS ENABLED FROM DEVICE WHERE ENABLED = 1; "
     const countAll = "SELECT COUNT(*) AS TOTAL FROM DEVICE; "
+
     connection.query(queryGataway+countEnablement+countAll,(error, results, fields) => {
         if(error) throw error;
         if(results) {
@@ -70,12 +72,15 @@ app.post('', (req,res) => {
 
 app.get('/device', (req,res) => {
     if(!req.query.id) {
+            
+        const host = req.get('host')
         const query = connection.query("SELECT `ID`, `GATEWAY_ID`, `MAC_ID`, `NAME`, `HOST`, `PORT`, `UNIT_ID`, `ENABLED` FROM DEVICE", (error, rows) => {
             if(error) throw error;
             if(rows) {
                 res.render('device', {
                     title: 'UYeG Device MANAGER',
                     name: 'ITS',
+                    host,
                     eocrs: rows
                 })
         
@@ -165,7 +170,6 @@ app.post('/device', (req,res) => {
     } else {
         ENABLED = 0
     }
-    
 
     const query = "UPDATE `DEVICE` SET `MAC_ID`='"+MAC_ID+"', `NAME`='"+NAME+"', `HOST`='"+HOST+"', `PORT`="+PORT+", `UNIT_ID`="+UNIT_ID+", `REMAP_VERSION`="+REMAP_VERSION+", `PROCESS_INTERVAL`="+PROCESS_INTERVAL+", `RETRY_CYCLE`="+RETRY_CYCLE+", `RETRY_COUNT`="+RETRY_COUNT+", `RETRY_CONN_FAILED_COUNT`="+RETRY_CONN_FAILED_COUNT+", `ENABLED`="+ENABLED+" WHERE ID="+req.query.id+""
 

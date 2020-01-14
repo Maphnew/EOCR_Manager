@@ -1,4 +1,5 @@
 const customSwitch = document.querySelectorAll('.custom-switch-input')
+const host = document.querySelector('#host')
 
 const sendAjax = (url, eocrID, isChecked) => {
     let data = {'eocrid': eocrID, 'isChecked':isChecked}
@@ -12,7 +13,7 @@ const sendAjax = (url, eocrID, isChecked) => {
         const result = JSON.parse(xhr.responseText)
         // console.log(result)
         setTimeout(() => {
-            window.location = "http://localhost:8000/device"
+            window.location = `http://${host.value }/device`
         }, 100)
         
     })
@@ -22,11 +23,12 @@ const sendAjax = (url, eocrID, isChecked) => {
 for (let i = 0; i < customSwitch.length; i++){
     customSwitch[i].addEventListener('click', async (e) => {
         const id = customSwitch[i].id
-       
+        const url = `http://${host.value}/ajax_change_enablement`
+
         if(e.srcElement.attributes.checked){
-            await sendAjax('http://localhost:8000/ajax_change_enablement', id, 0)
+            await sendAjax(url, id, 0)
         }else{
-            await sendAjax('http://localhost:8000/ajax_change_enablement', id, 1)
+            await sendAjax(url, id, 1)
         }
     })
 }
