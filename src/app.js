@@ -7,7 +7,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
 const app = express()
-const port = 8000
+const port = 80
 
 // Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, '../public')
