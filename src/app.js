@@ -26,8 +26,8 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(cookieParser())
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    // host: '192.168.100.22',
+    // host: 'localhost',
+    host: '192.168.100.22',
     port: '3306',
     user: 'root',
     password: 'its@1234',
@@ -212,6 +212,13 @@ app.post('/ajax_change_enablement', (req,res) => {
     })
 })
 
+app.get('/api', (req,res) => {
+    res.render('api', {
+        title: 'API',
+        name: 'ITS',
+        api: 'http://106.255.236.186:8282/gateway'
+    })
+})
 
 app.get('/device*', (req, res) => {
     res.render('404', {
