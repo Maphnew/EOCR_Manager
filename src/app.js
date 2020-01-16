@@ -232,10 +232,13 @@ app.post('/address', async (req,res) => {
     
     const inputHost = req.body.address
     await writeYaml(publicDirectoryPath, inputHost)
+    console.log('write yaml finish')
     if (shell.exec('sudo netplan apply').code !== 0) {
+        console.log('netplan apply')
         shell.echo('Error! netplan apply failed')
         shell.exit(1)
     } else {
+        shell.echo('echo else')
         console.log('REDIRECT')
         setTimeout(() => {
             res.redirect('http://'+inputHost+'/address')
