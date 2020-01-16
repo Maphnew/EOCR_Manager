@@ -235,7 +235,7 @@ app.post('/address', async (req,res) => {
         if (shell.exec('sudo netplan apply').code !== 0) {
             shell.exit(1)
 
-            res.render('http://'+inputHost+'/address', {
+            res.render('http://'+inputHost, {
                 title: 'IP Address',
                 name: 'ITS',
                 ip: host,
