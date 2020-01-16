@@ -246,13 +246,14 @@ app.post('/address', (req,res) => {
     } catch(e) {
         console.log(e)
     }
-    if (shell.exec('netplan apply').code !== 0) {
+    if (shell.exec('sudo netplan apply').code !== 0) {
         shell.echo('Error! netplan apply failed')
         shell.exit(1)
     } else {
+        console.log('REDIRECT')
         setTimeout(() => {
             res.redirect('http://'+inputHost+'/address')
-        }, 500)
+        }, 100)
     }
 })
 
