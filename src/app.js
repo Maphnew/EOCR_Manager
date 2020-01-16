@@ -234,9 +234,13 @@ app.post('/address', async (req,res) => {
     await writeYaml(publicDirectoryPath, inputHost).then(() => {
         if (shell.exec('sudo netplan apply').code !== 0) {
             shell.exit(1)
-            setTimeout(() => {
-                res.redirect('http://'+inputHost+'/address')
-            }, 100)
+
+            res.render('http://'+inputHost+'/address', {
+                title: 'IP Address',
+                name: 'ITS',
+                ip: host,
+                failedMessage: 'SUCCESS!'
+            })
         } else {
             const host = req.get('host')
             res.render('ipAddress', {
