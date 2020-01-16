@@ -4,10 +4,8 @@ const hbs = require('hbs')
 const mysql = require('mysql')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const yaml = require('js-yaml')
-const json2yaml = require('json2yaml')
-const fs = require('fs')
 const shell = require('shelljs')
+const writeYaml = require('./utils/yaml')
 
 const app = express()
 const port = 80
@@ -233,28 +231,18 @@ app.get('/address', (req,res) => {
 app.post('/address', (req,res) => {
     const yamlPath = '/etc/netplan'
     const inputHost = req.body.address
-    try {
-        fs.readFile(publicDirectoryPath+'/01-network-manager-all.json', (err, data) => {
-            let jsonobj = JSON.parse(data)
-            console.log('from: ', jsonobj.network.ethernets.eth0.addresses[0])
-            jsonobj.network.ethernets.eth0.addresses[0] = inputHost+'/24'
-            console.log('to: ', jsonobj.network.ethernets.eth0.addresses[0])
-            let ymlText = json2yaml.stringify(jsonobj)
-            // fs.writeFileSync(publicDirectoryPath+'/yaml-edit.yaml', ymlText, 'utf-8')
-            fs.writeFileSync(yamlPath+'/01-network-manager-all.yaml', ymlText, 'utf-8')
-        })
-    } catch(e) {
-        console.log(e)
-    }
-    if (shell.exec('sudo netplan apply').code !== 0) {
-        shell.echo('Error! netplan apply failed')
-        shell.exit(1)
-    } else {
-        console.log('REDIRECT')
-        setTimeout(() => {
-            res.redirect('http://'+inputHost+'/address')
-        }, 100)
-    }
+    writeYaml(publicDirectoryPath).then(() => {
+        if (shell.exec('sudo netplan apply').code !== 0) {
+            shell.echo('Error! netplan apply failed')
+            shell.exit(1)
+        } else {
+            console.log('REDIRECT')
+            setTimeout(() => {
+                res.redirect('http://'+inputHost+'/address')
+            }, 100)
+        }
+    })
+    
 })
 
 app.get('/device*', (req, res) => {
