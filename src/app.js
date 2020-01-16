@@ -29,8 +29,8 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(cookieParser())
 
 const connection = mysql.createConnection({
-    // host: 'localhost',
-    host: '192.168.100.22',
+    host: 'localhost',
+    // host: '192.168.100.22',
     port: '3306',
     user: 'root',
     password: 'its@1234',
