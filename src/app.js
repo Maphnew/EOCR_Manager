@@ -228,20 +228,20 @@ app.get('/address', (req,res) => {
     })
 })
 
-app.post('/address', (req,res) => {
+app.post('/address', async (req,res) => {
     
     const inputHost = req.body.address
-    writeYaml(publicDirectoryPath, inputHost).then(() => {
-        if (shell.exec('sudo netplan apply').code !== 0) {
-            shell.echo('Error! netplan apply failed')
-            shell.exit(1)
-        } else {
-            console.log('REDIRECT')
-            setTimeout(() => {
-                res.redirect('http://'+inputHost+'/address')
-            }, 100)
-        }
-    })
+    await writeYaml(publicDirectoryPath, inputHost)
+    if (shell.exec('sudo netplan apply').code !== 0) {
+        shell.echo('Error! netplan apply failed')
+        shell.exit(1)
+    } else {
+        console.log('REDIRECT')
+        setTimeout(() => {
+            res.redirect('http://'+inputHost+'/address')
+        }, 100)
+    }
+    
     
 })
 
