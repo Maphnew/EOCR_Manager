@@ -1,7 +1,8 @@
 const json2yaml = require('json2yaml')
 const fs = require('fs')
 
-const writeYaml = (publicDirectoryPath) => {
+const writeYaml = (publicDirectoryPath, inputHost) => {
+    const yamlPath = '/etc/netplan'
     try {
         fs.readFile(publicDirectoryPath+'/01-network-manager-all.json', (err, data) => {
             let jsonobj = JSON.parse(data)

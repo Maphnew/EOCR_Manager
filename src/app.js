@@ -229,9 +229,9 @@ app.get('/address', (req,res) => {
 })
 
 app.post('/address', (req,res) => {
-    const yamlPath = '/etc/netplan'
+    
     const inputHost = req.body.address
-    writeYaml(publicDirectoryPath).then(() => {
+    writeYaml(publicDirectoryPath, inputHost).then(() => {
         if (shell.exec('sudo netplan apply').code !== 0) {
             shell.echo('Error! netplan apply failed')
             shell.exit(1)
