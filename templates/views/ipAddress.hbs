@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Smart-ECOR MANAGER</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="main-content">
+        {{>header}}
+        <div>
+            <h3>IP Address</h3>
+        </div>
+        <form action method="post" id="" novalidate>
+            <div class="form-row aligned">
+                <div class="form-row">
+                    <label class="required" for="id_address">
+                        IP Address: 
+                    </label>
+                    <input type="text" id="id_address" name="address" value={{ip}} class="vTextField" maxlength="15" required>
+                    <input type="submit" value="변경" class="" name="_update">
+                </div>
+            </div>
+        </form>
+    </div>
+    {{>footer}}
+    
+</body>
+</html>

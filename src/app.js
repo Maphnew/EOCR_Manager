@@ -3,8 +3,11 @@ const express = require('express')
 const hbs = require('hbs')
 const mysql = require('mysql')
 const bodyParser = require('body-parser')
-// const session = require('express-session')
 const cookieParser = require('cookie-parser')
+const yaml = require('js-yaml')
+const json2yaml = require('json2yaml')
+const fs = require('fs')
+const shell = require('shelljs')
 
 const app = express()
 const port = 80
@@ -26,14 +29,15 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(cookieParser())
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    // host: '192.168.100.22',
+    // host: 'localhost',
+    host: '192.168.100.22',
     port: '3306',
     user: 'root',
     password: 'its@1234',
     database: 'uyeg',
     multipleStatements: true
 })
+
 
 connection.connect()
 app.get('', (req,res) => {
@@ -204,11 +208,8 @@ app.post('/ajax_change_enablement', (req,res) => {
     connection.query(query, (error, result) => {
         if(error) throw error
         if(result){
-
             res.json(responseData)
-            
         }
-        
     })
 })
 
@@ -218,6 +219,41 @@ app.get('/api', (req,res) => {
         name: 'ITS',
         api: 'http://106.255.236.186:8282/gateway'
     })
+})
+
+app.get('/address', (req,res) => {
+    const host = req.get('host')
+    res.render('ipAddress', {
+        title: 'IP Address',
+        name: 'ITS',
+        ip: host
+    })
+})
+
+app.post('/address', (req,res) => {
+    const yamlPath = '/etc/netplan'
+    const inputHost = req.body.address
+    try {
+        fs.readFile(publicDirectoryPath+'/01-network-manager-all.json', (err, data) => {
+            let jsonobj = JSON.parse(data)
+            console.log('from: ', jsonobj.network.ethernets.eth0.addresses[0])
+            jsonobj.network.ethernets.eth0.addresses[0] = inputHost+'/24'
+            console.log('to: ', jsonobj.network.ethernets.eth0.addresses[0])
+            let ymlText = json2yaml.stringify(jsonobj)
+            // fs.writeFileSync(publicDirectoryPath+'/yaml-edit.yaml', ymlText, 'utf-8')
+            fs.writeFileSync(yamlPath+'/01-network-manager-all.yaml', ymlText, 'utf-8')
+        })
+    } catch(e) {
+        console.log(e)
+    }
+    if (shell.exec('netplan apply').code !== 0) {
+        shell.echo('Error! netplan apply failed')
+        shell.exit(1)
+    } else {
+        setTimeout(() => {
+            res.redirect('http://'+inputHost+'/address')
+        }, 500)
+    }
 })
 
 app.get('/device*', (req, res) => {
