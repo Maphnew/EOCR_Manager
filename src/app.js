@@ -222,7 +222,7 @@ app.get('/api', (req,res) => {
 app.get('/address', (req,res) => {
     const host = req.get('host')
     res.render('ipAddress', {
-        title: 'IP Address',
+        title: 'UYeG Device MANAGER',
         name: 'ITS',
         ip: host
     })
@@ -236,7 +236,7 @@ app.post('/address', async (req,res) => {
             shell.exit(1)
 
             res.render('http://'+inputHost, {
-                title: 'IP Address',
+                title: 'UYeG Device MANAGER',
                 name: 'ITS',
                 ip: host,
                 failedMessage: 'SUCCESS!'
@@ -244,7 +244,7 @@ app.post('/address', async (req,res) => {
         } else {
             const host = req.get('host')
             res.render('ipAddress', {
-                title: 'IP Address',
+                title: 'UYeG Device MANAGER',
                 name: 'ITS',
                 ip: host,
                 failedMessage: 'FAILED! RETRY!'
