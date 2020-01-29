@@ -27,8 +27,8 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(cookieParser())
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    // host: '192.168.100.243',
+    // host: 'localhost',
+    host: '192.168.100.243',
     port: '3306',
     user: 'root',
     password: 'its@1234',
@@ -57,13 +57,25 @@ app.get('', (req,res) => {
     connection.query(queryGataway+countEnablement+countAll,(error, results, fields) => {
         if(error) throw error;
         if(results) {
-            
+            let GATEWAY_ID = ''
+            let ENABLED = 0
+            let TOTAL = 0
+            if (results[0].length === 0) {
+                GATEWAY_ID = 'gateway_id_empty'
+                ENABLED = 0
+                TOTAL = 0
+            } else {
+                GATEWAY_ID = results[0][0].GATEWAY_ID
+                ENABLED = results[1][0].ENABLED
+                TOTAL = results[2][0].TOTAL
+            }
+
             res.render('index', {
                 title: 'UYeG Device MANAGER',
                 name: 'ITS',
-                gatewayid:  results[0][0].GATEWAY_ID,
-                enabled: results[1][0].ENABLED,
-                total: results[2][0].TOTAL
+                gatewayid:  GATEWAY_ID,
+                enabled: ENABLED,
+                total: TOTAL
             })
         }
     })
@@ -145,7 +157,13 @@ app.post('/addDevice', (req,res) => {
 
     const queryGateaway = "SELECT DISTINCT GATEWAY_ID FROM DEVICE LIMIT 1; "
     dbSelect(queryGateaway).then((result) => {
-        const queryInsert = "INSERT INTO `DEVICE` (`GATEWAY_ID`, `MAC_ID`, `NAME`, `HOST`, `PORT`, `UNIT_ID`, `REMAP_VERSION`, `PROCESS_INTERVAL`, `RETRY_CYCLE`, `RETRY_COUNT`, `RETRY_CONN_FAILED_COUNT`, `ENABLED`) VALUES ('"+result[0].GATEWAY_ID+"', '"+MAC_ID+"', '"+NAME+"', '"+HOST+"', "+PORT+", "+UNIT_ID+", "+REMAP_VERSION+", "+PROCESS_INTERVAL+", "+RETRY_CYCLE+", "+RETRY_COUNT+", "+RETRY_CONN_FAILED_COUNT+", "+ENABLED+")"
+        let GATEWAY_ID = ''
+        if (result.length == 0) {
+            GATEWAY_ID = 'g210000000000'
+        } else {
+            GATEWAY_ID = result[0].GATEWAY_ID
+        }
+        const queryInsert = "INSERT INTO `DEVICE` (`GATEWAY_ID`, `MAC_ID`, `NAME`, `HOST`, `PORT`, `UNIT_ID`, `REMAP_VERSION`, `PROCESS_INTERVAL`, `RETRY_CYCLE`, `RETRY_COUNT`, `RETRY_CONN_FAILED_COUNT`, `ENABLED`) VALUES ('"+GATEWAY_ID+"', '"+MAC_ID+"', '"+NAME+"', '"+HOST+"', "+PORT+", "+UNIT_ID+", "+REMAP_VERSION+", "+PROCESS_INTERVAL+", "+RETRY_CYCLE+", "+RETRY_COUNT+", "+RETRY_CONN_FAILED_COUNT+", "+ENABLED+")"
         return new Promise((resolve, reject) => {
             connection.query(queryInsert, (error, result)=>{
                 if(error) reject('Things went wrong!')
