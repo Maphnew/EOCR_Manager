@@ -28,7 +28,7 @@ app.use(cookieParser())
 
 const connection = mysql.createConnection({
     host: 'localhost',
-    // host: '192.168.100.22',
+    // host: '192.168.100.243',
     port: '3306',
     user: 'root',
     password: 'its@1234',
@@ -36,8 +36,19 @@ const connection = mysql.createConnection({
     multipleStatements: true
 })
 
-
 connection.connect()
+
+const dbSelect = (query) => {
+    return new Promise((resolve, reject) =>  {
+        connection.query(query, (error, result) => {
+            if(error) throw error
+            if(result) {
+                resolve(result)
+            }
+        })
+    })
+}
+
 app.get('', (req,res) => {
     const queryGataway = "SELECT DISTINCT GATEWAY_ID FROM DEVICE LIMIT 1; "
     const countEnablement = "SELECT COUNT(*) AS ENABLED FROM DEVICE WHERE ENABLED = 1; "
@@ -132,18 +143,18 @@ app.post('/addDevice', (req,res) => {
         ENABLED = 0
     }
 
-    const query = "INSERT INTO `DEVICE` (`MAC_ID`, `NAME`, `HOST`, `PORT`, `UNIT_ID`, `REMAP_VERSION`, `PROCESS_INTERVAL`, `RETRY_CYCLE`, `RETRY_COUNT`, `RETRY_CONN_FAILED_COUNT`, `ENABLED`) VALUES ('"+MAC_ID+"', '"+NAME+"', '"+HOST+"', "+PORT+", "+UNIT_ID+", "+REMAP_VERSION+", "+PROCESS_INTERVAL+", "+RETRY_CYCLE+", "+RETRY_COUNT+", "+RETRY_CONN_FAILED_COUNT+", "+ENABLED+")"
-
-    connection.query(query, (error, result) => {
-        if(error) throw error
-        if(result){
-
-            res.redirect('addDevice')
-        }
-        
+    const queryGateaway = "SELECT DISTINCT GATEWAY_ID FROM DEVICE LIMIT 1; "
+    dbSelect(queryGateaway).then((result) => {
+        const queryInsert = "INSERT INTO `DEVICE` (`GATEWAY_ID`, `MAC_ID`, `NAME`, `HOST`, `PORT`, `UNIT_ID`, `REMAP_VERSION`, `PROCESS_INTERVAL`, `RETRY_CYCLE`, `RETRY_COUNT`, `RETRY_CONN_FAILED_COUNT`, `ENABLED`) VALUES ('"+result[0].GATEWAY_ID+"', '"+MAC_ID+"', '"+NAME+"', '"+HOST+"', "+PORT+", "+UNIT_ID+", "+REMAP_VERSION+", "+PROCESS_INTERVAL+", "+RETRY_CYCLE+", "+RETRY_COUNT+", "+RETRY_CONN_FAILED_COUNT+", "+ENABLED+")"
+        return new Promise((resolve, reject) => {
+            connection.query(queryInsert, (error, result)=>{
+                if(error) reject('Things went wrong!')
+                if(result){
+                    res.redirect('addDevice')
+                }
+            })
+        })
     })
-
-
 })
 
 app.get('/addDevice', (req,res) => {
